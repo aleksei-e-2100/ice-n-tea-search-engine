@@ -4,6 +4,7 @@
 #include <iostream>  // убрать
 #include <fstream>
 #include <string>
+#include <vector>
 #include <exception>
 
 #include "nlohmann/json.hpp"
@@ -21,11 +22,13 @@ private:
     string answerJSON_filename;
 
     nlohmann::json configJSON;
+    
+    vector<string> textDocuments;
     int maxResponses;
 
-    void getConfigJSON();
+    void setConfigJSON();
     void checkConfig();
-    void checkTextDocumentsArray();
+    void checkTextDocuments();
 
 public:
     ConverterJSON(const string& defaultProjectName,
@@ -35,7 +38,9 @@ public:
                   const string& answerJSON_filename);
 
     string getProjectName();
-    
+    vector<string> getTextDocuments();
+    int getResponsesLimit();
+    void putAnswers(); // добавить параметры
 };
 
 #endif  // CONVERTER_JSON_H

@@ -5,7 +5,8 @@ set(C_MAKE_CXX_STANDART 17)
 set(PROJECT_SOURCES
     main.cpp
     ${INCLUDE_DIR}/converterJSON.h
-    converterJSON.cpp
+    converterJSON_1.cpp
+    converterJSON_2.cpp
 )
 
 set(RUNTIME_OUTPUT_NAME SearchEngine)

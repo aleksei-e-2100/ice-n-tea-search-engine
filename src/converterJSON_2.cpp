@@ -1,36 +1,14 @@
+/*
+ *  ConverterJSON, часть 2
+ *  Логика методов работы с configJSON
+*/
+
 #include "converterJSON.h"
-
-ConverterJSON::ConverterJSON(const string& defaultProjectName,
-                             const string& projectVersion,
-                             const string& configJSON_filename, 
-                             const string& requestsJSON_filename, 
-                             const string& answerJSON_filename)
-{
-    this->configJSON_filename = configJSON_filename;
-    this->requestsJSON_filename = requestsJSON_filename;
-    this->answerJSON_filename = answerJSON_filename;
-    this->projectVersion = projectVersion;
-
-    getConfigJSON();
-    checkConfig();
-    checkTextDocumentsArray();
-    
-    if (configJSON["config"].contains("name"))
-        projectName = configJSON["config"]["name"];
-    else
-        projectName = defaultProjectName;
-
-    if (configJSON["config"].contains("max_responses"))
-        maxResponses = configJSON["config"]["max_responses"];
-    else
-        maxResponses = 5;
-}
-
 
 // Метод для получения данных из файла конфигурации, проверки
 // его на соответствие формату json, проверки наличия в нем
 // необходимых полей
-void ConverterJSON::getConfigJSON()
+void ConverterJSON::setConfigJSON()
 {
     ifstream file (configJSON_filename, ios::in);
     
@@ -51,7 +29,7 @@ void ConverterJSON::getConfigJSON()
 
     if (!configJSON.contains("config") 
         || !configJSON.contains("files"))
-        throw runtime_error("config file has required data");
+        throw runtime_error("config file has no required data");
 }
 
 
@@ -104,22 +82,17 @@ void ConverterJSON::checkConfig()
 
 // Метод для проверки корректности списка текстовых файлов
 // (поле "files" в файле конфигурации)
-void ConverterJSON::checkTextDocumentsArray()
+void ConverterJSON::checkTextDocuments()
 {
     // наличие сведений о файлах, содержание их в массиве
     if (configJSON["files"].size() == 0 
         || !configJSON["files"].is_array())
         throw runtime_error("text files data is incorrect");
-
+    
     // имена файлов (пути к ним) в текстовом формате
-
-
+    for (auto &filename : configJSON["files"])
+    {
+        if (!filename.is_string())
+            throw runtime_error("text files data is incorrect");
+    }
 }
-
-
-// Метод для получения названия проекта
-string ConverterJSON::getProjectName()
-{
-    return projectName;
-}   
-

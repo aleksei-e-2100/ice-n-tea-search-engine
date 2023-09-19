@@ -7,6 +7,7 @@ set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 add_subdirectory(src)
 
 include(FetchContent)
+
 FetchContent_Declare(json 
                      GIT_REPOSITORY https://github.com/nlohmann/json.git 
                      GIT_TAG v3.11.2)
