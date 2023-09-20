@@ -7,6 +7,8 @@ set(PROJECT_SOURCES
     ${INCLUDE_DIR}/converterJSON.h
     converterJSON_1.cpp
     converterJSON_2.cpp
+    ${INCLUDE_DIR}/invertedIndex.h
+    invertedIndex.cpp
 )
 
 set(RUNTIME_OUTPUT_NAME SearchEngine)

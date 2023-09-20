@@ -1,7 +1,6 @@
 #ifndef CONVERTER_JSON_H
 #define CONVERTER_JSON_H
 
-#include <iostream>  // убрать
 #include <fstream>
 #include <string>
 #include <vector>
@@ -21,14 +20,12 @@ private:
     string requestsJSON_filename;
     string answerJSON_filename;
 
-    nlohmann::json configJSON;
-    
     vector<string> textDocuments;
     int maxResponses;
 
-    void setConfigJSON();
-    void checkConfig();
-    void checkTextDocuments();
+    void setConfigJSON(nlohmann::json& configJSON);
+    void checkConfig(const nlohmann::json& configJSON);
+    void checkTextDocuments(const nlohmann::json& configJSON);
 
 public:
     ConverterJSON(const string& defaultProjectName,

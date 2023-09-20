@@ -2,6 +2,7 @@
 #include <string>
 
 #include "converterJSON.h"
+#include "invertedIndex.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ const string ANSWER_JSON_FILENAME = "answer.json";
 
 int main()
 {
-    ConverterJSON *converterJSON = nullptr;
+    ConverterJSON* converterJSON = nullptr;
     
     try
     {
@@ -29,9 +30,13 @@ int main()
         return 0;
     }
     
+    InvertedIndex* invertedIndex = new InvertedIndex();
+    invertedIndex->updateDocumentBase(converterJSON->getTextDocuments());
+
     cout << "---" << endl;
     cout << converterJSON->getProjectName() << " " << PROJECT_VERSION << endl;
     cout << "---" << endl;
 
     delete converterJSON;
+    delete invertedIndex;
 }

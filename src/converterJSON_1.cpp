@@ -17,9 +17,11 @@ ConverterJSON::ConverterJSON(const string& defaultProjectName,
     this->answerJSON_filename = answerJSON_filename;
     this->projectVersion = projectVersion;
 
-    setConfigJSON();
-    checkConfig();
-    checkTextDocuments();
+    nlohmann::json configJSON;
+
+    setConfigJSON(configJSON);
+    checkConfig(configJSON);
+    checkTextDocuments(configJSON);
     
     if (configJSON["config"].contains("name"))
         projectName = configJSON["config"]["name"];

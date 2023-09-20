@@ -8,11 +8,11 @@
 // Метод для получения данных из файла конфигурации, проверки
 // его на соответствие формату json, проверки наличия в нем
 // необходимых полей
-void ConverterJSON::setConfigJSON()
+void ConverterJSON::setConfigJSON(nlohmann::json& configJSON)
 {
-    ifstream file (configJSON_filename, ios::in);
+    ifstream file(configJSON_filename);
     
-    if(!file.is_open())
+    if (!file.is_open())
         throw runtime_error("config file is missing");
     
     try
@@ -35,7 +35,7 @@ void ConverterJSON::setConfigJSON()
 
 // Метод для проверки конфигурации 
 // (поле "config" в файле конфигурации)
-void ConverterJSON::checkConfig()
+void ConverterJSON::checkConfig(const nlohmann::json& configJSON)
 {
     // наличие поля "version"
     if (!configJSON["config"].contains("version"))
@@ -82,7 +82,7 @@ void ConverterJSON::checkConfig()
 
 // Метод для проверки корректности списка текстовых файлов
 // (поле "files" в файле конфигурации)
-void ConverterJSON::checkTextDocuments()
+void ConverterJSON::checkTextDocuments(const nlohmann::json& configJSON)
 {
     // наличие сведений о файлах, содержание их в массиве
     if (configJSON["files"].size() == 0 
