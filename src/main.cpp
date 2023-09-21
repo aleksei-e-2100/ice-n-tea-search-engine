@@ -36,7 +36,7 @@ int main()
     cout << "---" << endl;
     cout << converterJSON->getProjectName() << " " << PROJECT_VERSION << endl;
     cout << "---" << endl;
-
+    
     delete converterJSON;
     delete invertedIndex;
 }

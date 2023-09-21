@@ -5,8 +5,14 @@
 
 #include "invertedIndex.h"
 
-// Метод для создания (обновления) индексированной базы документов,
-// по которым будет совершаться поиск
+// Оператор необходим для проведения тестовых сценариев    
+bool Entry::operator ==(const Entry& other) const 
+{
+        return (doc_id == other.doc_id && count == other.count);
+}
+
+
+// Метод создания (обновления) индексированной базы документов
 void InvertedIndex::updateDocumentBase(vector<string> textDocuments)
 {
     setTextDocumentsContent(textDocuments);
@@ -14,7 +20,7 @@ void InvertedIndex::updateDocumentBase(vector<string> textDocuments)
 }
 
 
-// Метод для получения содержимого текстовых файлов
+// Метод получения содержимого текстовых файлов
 void InvertedIndex::setTextDocumentsContent(vector<string>& textDocuments)
 {
     ifstream file;
@@ -49,7 +55,7 @@ void InvertedIndex::setTextDocumentsContent(vector<string>& textDocuments)
 }
 
 
-// Метод для создания инвертированного индекса
+// Метод создания инвертированного индекса
 void InvertedIndex::makeFreqDictionary()
 {
     int documentsCount = textDocumentsContent.size();
@@ -64,7 +70,6 @@ void InvertedIndex::makeFreqDictionary()
 
 
 // Метод подсчета слов в текстовом документе
-// (для каждого текстового документа запускается в отдельном потоке)
 void InvertedIndex::countWords(string fileContent, size_t doc_id)
 {
     map<string, size_t> words;
@@ -82,6 +87,16 @@ void InvertedIndex::countWords(string fileContent, size_t doc_id)
         Entry entry {doc_id, it->second};
         freqDictionary[it->first].push_back(entry);
     }
-    freqDictionary_access.unlock();
+    freqDictionary_access.unlock();    
+}
+
+// Метод получения количества вхождений слова в базе документов
+vector<Entry> InvertedIndex::getWordCount(string word)
+{
+    vector<Entry> wordCount;
+
+    if (freqDictionary.count(word) > 0)
+        wordCount = freqDictionary[word];
     
+    return wordCount;
 }

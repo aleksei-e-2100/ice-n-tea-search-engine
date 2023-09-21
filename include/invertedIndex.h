@@ -15,6 +15,7 @@ using namespace std;
 struct Entry
 {
     size_t doc_id, count;
+    bool operator ==(const Entry& other) const;
 };
 
 class InvertedIndex
@@ -33,6 +34,9 @@ public:
     InvertedIndex() = default;
 
     void updateDocumentBase(vector<string> textDocuments);
+    void testUpdateDocumentBase(vector<string> texts);
+
+    vector<Entry> getWordCount(string word);
 };
 
 #endif  // INVERTED_INDEX_H

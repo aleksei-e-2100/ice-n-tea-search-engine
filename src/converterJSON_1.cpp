@@ -37,22 +37,21 @@ ConverterJSON::ConverterJSON(const string& defaultProjectName,
 }
 
 
-// Метод для получения названия проекта
+// Метод получения названия проекта
 string ConverterJSON::getProjectName()
 {
     return projectName;
 }   
 
 
-// Метод для получения вектора со списком
-// текстовых файлов
+// Метод получения списка текстовых файлов
 vector<string> ConverterJSON::getTextDocuments()
 {
     return textDocuments;
 }   
 
 
-// Метод для получения предельного количества ответов
+// Метод получения предельного количества ответов
 // на один запрос
 int ConverterJSON::getResponsesLimit()
 {
@@ -60,8 +59,8 @@ int ConverterJSON::getResponsesLimit()
 }
 
 
-// Метод для записи результатов поисковых запросов
-// в соответствующий файл
+// Метод записи результатов поисковых запросов
+// в файл с ответами
 void ConverterJSON::putAnswers() 
 {
     // добавить параметры метода и логику

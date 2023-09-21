@@ -5,7 +5,7 @@
 
 #include "converterJSON.h"
 
-// Метод для получения данных из файла конфигурации, проверки
+// Метод получения данных из файла конфигурации, проверки
 // его на соответствие формату json, проверки наличия в нем
 // необходимых полей
 void ConverterJSON::setConfigJSON(nlohmann::json& configJSON)
@@ -33,8 +33,7 @@ void ConverterJSON::setConfigJSON(nlohmann::json& configJSON)
 }
 
 
-// Метод для проверки конфигурации 
-// (поле "config" в файле конфигурации)
+// Метод проверки конфигурации (поле "config" в файле конфигурации)
 void ConverterJSON::checkConfig(const nlohmann::json& configJSON)
 {
     // наличие поля "version"
@@ -80,7 +79,7 @@ void ConverterJSON::checkConfig(const nlohmann::json& configJSON)
 }
 
 
-// Метод для проверки корректности списка текстовых файлов
+// Метод проверки корректности списка текстовых файлов
 // (поле "files" в файле конфигурации)
 void ConverterJSON::checkTextDocuments(const nlohmann::json& configJSON)
 {
