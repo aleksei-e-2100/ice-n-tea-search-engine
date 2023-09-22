@@ -23,6 +23,9 @@ private:
     nlohmann::json configJSON;
     void setConfigJSON();
 
+    nlohmann::json requestsJSON;
+    void setRequestsJSON();
+
 public:
     ConverterJSON(const string& appVersion,
                   const string& configJSON_filename, 
@@ -32,6 +35,8 @@ public:
     string getAppName();
     vector<string> getTextDocuments();
     int getResponsesLimit();
+    vector<string> getRequests();
+    
     void putAnswers();
 };
 

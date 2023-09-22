@@ -18,7 +18,7 @@ ConverterJSON::ConverterJSON(const string& appVersion,
     this->answerJSON_filename = answerJSON_filename;
 
     setConfigJSON();
-    // setRequestsJSON();
+    setRequestsJSON();
     // setAnswerJSON();
 }
 
@@ -80,6 +80,13 @@ int ConverterJSON::getResponsesLimit()
         return configJSON["config"]["max_responses"];
     else
         return -1;
+}
+
+
+// Метод получения содержимого запросов
+vector<string> ConverterJSON::getRequests()
+{
+    return requestsJSON["requests"];
 }
 
 

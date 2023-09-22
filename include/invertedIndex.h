@@ -17,13 +17,13 @@ struct Entry
     bool operator ==(const Entry& other) const;
 };
 
+
 class InvertedIndex
 {
 private:
     vector<string> textDocuments;
     map<string, vector<Entry>> freqDictionary;
 
-    mutex freqDictionary_access;
     void countWordsInDocument(const string& fileContent, size_t doc_id);
 
 public:

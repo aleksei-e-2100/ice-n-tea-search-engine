@@ -3,6 +3,7 @@
 
 #include "converterJSON.h"
 #include "invertedIndex.h"
+#include "searchServer.h"
 
 using namespace std;
 
@@ -41,7 +42,14 @@ int main()
     invertedIndex->updateDocumentBase(converterJSON->getTextDocuments());
     cout << "Ok" << endl;
 
+    SearchServer* searchServer = new SearchServer(*invertedIndex);
+    cout << "Processing requests..." << endl;
+    vector<vector<RelativeIndex>> answers = 
+            searchServer->search(converterJSON->getRequests());
+    cout << "Ok" << endl;
+
     cout << endl;
     delete converterJSON;
     delete invertedIndex;
+    delete searchServer;
 }

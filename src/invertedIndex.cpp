@@ -32,6 +32,7 @@ void InvertedIndex::updateDocumentBase(vector<string> inTextDocuments)
 
 
 // Метод подсчета слов в одном текстовом документе
+mutex freqDictionary_access;
 void InvertedIndex::countWordsInDocument(const string& textDocument, size_t doc_id)
 {
     map<string, size_t> words;
