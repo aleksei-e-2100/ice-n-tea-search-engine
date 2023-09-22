@@ -1,7 +1,6 @@
 #ifndef INVERTED_INDEX_H
 #define INVERTED_INDEX_H
 
-#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -21,21 +20,16 @@ struct Entry
 class InvertedIndex
 {
 private:
-    vector<string> textDocumentsContent;
+    vector<string> textDocuments;
     map<string, vector<Entry>> freqDictionary;
 
-    void setTextDocumentsContent(vector<string>& textDocuments);
-    void makeFreqDictionary();
-    
     mutex freqDictionary_access;
-    void countWords(string fileContent, size_t doc_id);
+    void countWordsInDocument(const string& fileContent, size_t doc_id);
 
 public:
     InvertedIndex() = default;
 
-    void updateDocumentBase(vector<string> textDocuments);
-    void testUpdateDocumentBase(vector<string> texts);
-
+    void updateDocumentBase(vector<string> inTextDocuments);
     vector<Entry> getWordCount(string word);
 };
 

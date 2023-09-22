@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <string_view>
 #include "invertedIndex.h"
 
 using namespace std;
@@ -21,19 +22,22 @@ void testInvertedIndexFunctionality(const vector<string> textDocuments,
 
     /*
     * Индексация выполняется в несколько потоков.
-    * В случае, если следующий поток завершиться раньше предшествующего,
-    * в словаре freqDictionary записи о документах, в которые входит слово, 
-    * будут не по порядку. 
-    * Например:
+    * Если последующий поток завершится раньше предшествующего, он
+    * раньше него внесет запись в словарь freqDictionary, и записи
+    * о вхождении того или иного слова будут расположены не по
+    * порядку номеров текстовых документов.
+    * Например: 
     * слово входит в документ 0 два раза и в документ 1 три раза.
     * Если потоки завершаться по порядку, запись будет такая:
     * {0, 2}, {1, 3}
     * Если же второй поток завершиться раньше первого, запись будет такая:
     * {1, 3}, {0, 2}
-    * Для целей данного приложения это не играет никакой роли. Но при
-    * тестировании, это может привести к ошибочному результату теста - 
-    * ожидание теста {0, 2}, {1, 3}, а результат - {1, 3}, {0, 2}.
-    * Поэтому здесь важно упорядочить результат, что и сделаем:
+    * На функционал приложения это никак не влияет. Записи корректны.
+    * Но на результаты теста это влияет критически и может привести к 
+    * ошибочному результату: ожидаемый результ {0, 2}, {1, 3}, а 
+    * фактический результат - {1, 3}, {0, 2}. Хотя результат и верный,
+    * тест пройден не будет.
+    * Поэтому здесь важно упорядочить (отсортировать) результат, что и сделаем:
     */
 
     for (auto& vec : result)
@@ -59,8 +63,8 @@ TEST(TestInvertedIndex, TestBasic_1)
 {
     const vector<string> textDocuments = 
     {
-        "test_text_file_1.0.txt",
-        "test_text_file_1.1.txt"
+        "london is the capital of great britain",
+        "big ben is the nickname for the great bell of the striking clock"
     };
     
     const vector<string> requests = 
@@ -83,10 +87,10 @@ TEST(TestInvertedIndex, TestBasic_2)
 {
     const vector<string> textDocuments = 
     {
-        "test_text_file_2.0.txt",
-        "test_text_file_2.1.txt",
-        "test_text_file_2.2.txt",
-        "test_text_file_2.3.txt"
+        "milk milk milk milk water water water",
+        "milk water water",
+        "milk milk milk milk milk water water water water water",
+        "americano cappuchino"
     };
     
     const vector<string> requests = 
@@ -111,8 +115,8 @@ TEST(TestInvertedIndex, TestBasic_3)
 {
     const vector<string> textDocuments = 
     {
-        "test_text_file_3.0.txt",
-        "test_text_file_3.1.txt"
+        "a b c d e f g h i g k l",
+        "statement"
     };
     
     const vector<string> requests = 

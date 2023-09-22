@@ -1,20 +1,21 @@
 /*
  *  ConverterJSON, часть 2
- *  Логика методов работы с configJSON
+ *  Логика метода setConfigJSON()
 */
 
 #include "converterJSON.h"
 
-// Метод получения данных из файла конфигурации, проверки
-// его на соответствие формату json, проверки наличия в нем
-// необходимых полей
-void ConverterJSON::setConfigJSON(nlohmann::json& configJSON)
+// Метод получения данных из файла конфигурации и их проверки
+void ConverterJSON::setConfigJSON()
 {
     ifstream file(configJSON_filename);
     
+    // проверка: открывается (существует ли) файл
     if (!file.is_open())
         throw runtime_error("config file is missing");
     
+    // проверка: соответствует ли файл формату json
+    // (если да, то информация из него записывается в переменную)
     try
     {
         file >> configJSON;
@@ -27,43 +28,47 @@ void ConverterJSON::setConfigJSON(nlohmann::json& configJSON)
     
     file.close();
 
+    // Проверка: есть ли необходимые ключи "config" и "files"
     if (!configJSON.contains("config") 
         || !configJSON.contains("files"))
         throw runtime_error("config file has no required data");
-}
+    
+    // Проверка: нет ли лишних данных (лишних ключей)
+    if (configJSON.size() > 2)
+        throw runtime_error("config file contains unnecessary information");
 
-
-// Метод проверки конфигурации (поле "config" в файле конфигурации)
-void ConverterJSON::checkConfig(const nlohmann::json& configJSON)
-{
-    // наличие поля "version"
+    // Проверка значений ключа "config":
+    // - есть ли ключ "version"
     if (!configJSON["config"].contains("version"))
         throw runtime_error("config file has no version data");
 
-    // правильный формат данных в поле "version"
+    // - правильный ли тип значения ключа "version"
     if (!configJSON["config"]["version"].is_string())
         throw runtime_error("config file version data is incorrect");
 
-    // соответствие версии файла конфигурации версии проекта
-    if (configJSON["config"]["version"] != projectVersion)
+    // - соответствует ли версия файла конфигурации версии приложения
+    if (configJSON["config"]["version"] != appVersion)
         throw runtime_error("config file has incorrect version");
 
-    // значение в поле "max_responses"
+    // - правильный ли тип значения ключа "max_responses"
+    //   (если такой ключ есть)
     if (configJSON["config"].contains("max_responses"))
     {
         if (!configJSON["config"]["max_responses"].is_number())
             throw runtime_error("max responses data is incorrect");
         
         int num = static_cast<int>(configJSON["config"]["max_responses"]);
-        if (configJSON["config"]["max_responses"] > num)
+        if (configJSON["config"]["max_responses"] > num
+            || configJSON["config"]["max_responses"] < 1)
             throw runtime_error("max responses data is incorrect");
     }
 
-    // отсутствие лишних полей
+    // - нет ли лишних данных (лишних ключей)
     if (configJSON["config"].size() > 3)
         throw runtime_error("config data contains unnecessary information");
 
-    // отсутствие лишних полей либо полей с некорректными значениями
+    // - нет ли лишних данных (ключей) и соответствуют ли значения
+    //   тех ключей, что есть, необходимым типам
     if (configJSON["config"].size() > 1)
     {
         for (auto it = configJSON["config"].begin(); 
@@ -76,19 +81,14 @@ void ConverterJSON::checkConfig(const nlohmann::json& configJSON)
             throw runtime_error("config data is incorrect");
         }
     }
-}
 
-
-// Метод проверки корректности списка текстовых файлов
-// (поле "files" в файле конфигурации)
-void ConverterJSON::checkTextDocuments(const nlohmann::json& configJSON)
-{
-    // наличие сведений о файлах, содержание их в массиве
+    // Проверка значений ключа "files":
+    // - является ли значение ключа "files" массивом, не пустой ли он
     if (configJSON["files"].size() == 0 
         || !configJSON["files"].is_array())
         throw runtime_error("text files data is incorrect");
     
-    // имена файлов (пути к ним) в текстовом формате
+    // - являются ли имена файлов текстовыми значениями
     for (auto &filename : configJSON["files"])
     {
         if (!filename.is_string())

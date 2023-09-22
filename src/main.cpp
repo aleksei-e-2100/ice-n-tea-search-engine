@@ -6,8 +6,8 @@
 
 using namespace std;
 
-const string DEFAULT_PROJECT_NAME = "iCE && tEA Search Engine";
-const string PROJECT_VERSION = "1.0";
+const string DEFAULT_APP_NAME = "iCE && tEA Search Engine";
+const string APP_VERSION = "1.0";
 const string CONFIG_JSON_FILENAME = "config.json";
 const string REQUESTS_JSON_FILENAME = "requests.json";
 const string ANSWER_JSON_FILENAME = "answer.json";
@@ -18,25 +18,30 @@ int main()
     
     try
     {
-        converterJSON = new ConverterJSON(DEFAULT_PROJECT_NAME,
-                                          PROJECT_VERSION,
+        converterJSON = new ConverterJSON(APP_VERSION,
                                           CONFIG_JSON_FILENAME, 
                                           REQUESTS_JSON_FILENAME, 
                                           ANSWER_JSON_FILENAME);
     }
     catch(const exception& e)
     {
-        cout << "Shutdown: " << e.what() << endl;
+        cout << "App cannot start: " << e.what() << endl;
         return 0;
     }
     
-    InvertedIndex* invertedIndex = new InvertedIndex();
-    invertedIndex->updateDocumentBase(converterJSON->getTextDocuments());
+    string appName = converterJSON->getAppName();
+    if (appName == "") appName = DEFAULT_APP_NAME;
 
     cout << "---" << endl;
-    cout << converterJSON->getProjectName() << " " << PROJECT_VERSION << endl;
+    cout << appName << " " << APP_VERSION << endl;
     cout << "---" << endl;
-    
+
+    InvertedIndex* invertedIndex = new InvertedIndex();
+    cout << "Indexing documents base..." << endl;
+    invertedIndex->updateDocumentBase(converterJSON->getTextDocuments());
+    cout << "Ok" << endl;
+
+    cout << endl;
     delete converterJSON;
     delete invertedIndex;
 }
