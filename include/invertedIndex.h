@@ -11,6 +11,7 @@
 
 using namespace std;
 
+
 struct Entry
 {
     size_t doc_id, count;

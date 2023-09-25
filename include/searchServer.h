@@ -1,14 +1,16 @@
 #ifndef SEARCH_SERVER_H
 #define SEARCH_SERVER_H
 
-#include <string> //
+#include <string>
 #include <vector>
 #include <unordered_map>
 #include <sstream>
+#include <string_view>
 
 #include "invertedIndex.h"
 
 using namespace std;
+
 
 struct RelativeIndex
 {
@@ -17,7 +19,6 @@ struct RelativeIndex
 
     bool operator ==(const RelativeIndex& other) const;
 };
-
 
 
 class SearchServer

@@ -5,6 +5,7 @@
 
 #include "converterJSON.h"
 
+
 // Метод получения данных из файла конфигурации и их проверки
 void ConverterJSON::setConfigJSON()
 {

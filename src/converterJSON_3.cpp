@@ -5,6 +5,7 @@
 
 #include "converterJSON.h"
 
+
 // Метод получения данных из файла запросов и их проверки
 void ConverterJSON::setRequestsJSON()
 {

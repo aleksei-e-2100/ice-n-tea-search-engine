@@ -5,6 +5,7 @@
 
 #include "invertedIndex.h"
 
+
 // Оператор необходим для тестовых сценариев
 bool Entry::operator ==(const Entry& other) const 
 {
