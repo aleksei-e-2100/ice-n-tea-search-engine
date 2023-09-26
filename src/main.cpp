@@ -11,7 +11,7 @@ const string DEFAULT_APP_NAME = "iCE && tEA Search Engine";
 const string APP_VERSION = "1.0";
 const string CONFIG_JSON_FILENAME = "config.json";
 const string REQUESTS_JSON_FILENAME = "requests.json";
-const string ANSWER_JSON_FILENAME = "answer.json";
+const string ANSWERS_JSON_FILENAME = "answers.json";
 
 int main()
 {
@@ -22,7 +22,7 @@ int main()
         converterJSON = new ConverterJSON(APP_VERSION,
                                           CONFIG_JSON_FILENAME, 
                                           REQUESTS_JSON_FILENAME, 
-                                          ANSWER_JSON_FILENAME);
+                                          ANSWERS_JSON_FILENAME);
     }
     catch(const exception& e)
     {
@@ -40,13 +40,16 @@ int main()
     InvertedIndex* invertedIndex = new InvertedIndex();
     cout << "Indexing documents base..." << endl;
     invertedIndex->updateDocumentBase(converterJSON->getTextDocuments());
-    cout << "Ok" << endl;
 
     SearchServer* searchServer = new SearchServer(*invertedIndex);
     cout << "Processing requests..." << endl;
     vector<vector<RelativeIndex>> answers = 
             searchServer->search(converterJSON->getRequests());
-    cout << "Ok" << endl;
+
+    cout << "Putting answers..." << endl;
+    converterJSON->putAnswers(answers);
+
+    cout << "Finished" << endl;
 
     cout << endl;
     delete converterJSON;

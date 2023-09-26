@@ -10,16 +10,20 @@
 ConverterJSON::ConverterJSON(const string& appVersion,
                              const string& configJSON_filename, 
                              const string& requestsJSON_filename, 
-                             const string& answerJSON_filename)
+                             const string& answersJSON_filename)
 {
     this->appVersion = appVersion;
     this->configJSON_filename = configJSON_filename;
     this->requestsJSON_filename = requestsJSON_filename;
-    this->answerJSON_filename = answerJSON_filename;
+    this->answersJSON_filename = answersJSON_filename;
 
     setConfigJSON();
     setRequestsJSON();
-    // setAnswerJSON();
+    
+    if (configJSON["config"].contains("max_responses"))
+        responsesLimit = configJSON["config"]["max_responses"];
+    else
+        responsesLimit = 5;
 }
 
 
@@ -72,17 +76,6 @@ vector<string> ConverterJSON::getTextDocuments()
 }   
 
 
-// Метод получения предельного количества ответов
-// на один запрос
-int ConverterJSON::getResponsesLimit()
-{
-    if (configJSON["config"].contains("max_responses"))
-        return configJSON["config"]["max_responses"];
-    else
-        return -1;
-}
-
-
 // Метод получения содержимого запросов
 vector<string> ConverterJSON::getRequests()
 {
@@ -92,7 +85,53 @@ vector<string> ConverterJSON::getRequests()
 
 // Метод записи результатов поисковых запросов
 // в файл с ответами
-void ConverterJSON::putAnswers() 
+void ConverterJSON::putAnswers(vector<vector<RelativeIndex>>& answers) 
 {
-    // TODO
+    string requestID;
+    int requestNum = 1;
+    
+    for (auto& currentAnswer : answers)
+    {
+        if (requestNum < 10)
+            requestID = "request00" + to_string(requestNum);
+        else if (requestNum < 100)
+            requestID = "request0" + to_string(requestNum);
+        else
+            requestID = "request" + to_string(requestNum);
+        
+        requestNum ++;
+        if (currentAnswer.empty())
+        {
+            answersJSON["answers"][requestID]["result"] = false;
+            continue;
+        }
+
+        answersJSON["answers"][requestID]["result"] = true;
+
+        if (currentAnswer.size() == 1)
+        {
+            answersJSON["answers"][requestID]["doc_id"] = currentAnswer[0].doc_id;
+            answersJSON["answers"][requestID]["rank"] = currentAnswer[0].rank;
+            continue;
+        }
+
+        int responseNum = 1;
+        for (auto& response : currentAnswer)
+        {
+            if (responseNum >= responsesLimit) 
+                break;
+            
+            nlohmann::json responseEntry = 
+                    {{"doc_id", response.doc_id}, {"rank", response.rank}};
+
+            
+            answersJSON["answers"][requestID]["relevance"].emplace_back(responseEntry);
+
+            responseNum++;
+        }
+    }
+
+    ofstream file(answersJSON_filename); 
+    file << setw(4) << answersJSON;
+    file.close();
 }

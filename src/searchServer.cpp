@@ -131,7 +131,7 @@ vector<vector<RelativeIndex>> SearchServer::search(const vector<string>& request
         {
             currentRequestAnswer.push_back(
                     {entry.doc_id, 
-                    static_cast<float>(entry.count) / static_cast<float>(maxAbsRelevance)});
+                    static_cast<double>(entry.count) / static_cast<double>(maxAbsRelevance)});
         }
 
         answers.push_back(currentRequestAnswer);

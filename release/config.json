@@ -1,0 +1,12 @@
+{
+    "config": {
+        "name": "iCE && tEA Search Engine",
+        "version": "1.0",
+        "max_responses": 5
+    },
+    "files": [
+        "text_files/file001.txt",
+        "text_files/file002.txt",
+        "text_files/file003.txt"
+    ]
+}

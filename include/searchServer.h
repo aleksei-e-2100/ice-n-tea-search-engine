@@ -15,7 +15,7 @@ using namespace std;
 struct RelativeIndex
 {
     size_t doc_id;
-    float rank;
+    double rank;
 
     bool operator ==(const RelativeIndex& other) const;
 };
