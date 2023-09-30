@@ -38,11 +38,12 @@ public:
                   const string& requestsJSON_filename, 
                   const string& answersJSON_filename);
     
-    string getAppName();
+    string getAppName() const;
     vector<string> getTextDocuments();
-    vector<string> getRequests();
+    vector<string> getRequests() const;
     
     void putAnswers(vector<vector<RelativeIndex>>& answers);
+    void checkAnswersFile();
 };
 
 #endif  // CONVERTER_JSON_H

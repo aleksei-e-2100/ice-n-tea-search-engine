@@ -46,7 +46,7 @@ vector<vector<RelativeIndex>> SearchServer::search(const vector<string>& request
             words[word] = wordEntries;
             
             size_t totalCount = 0;
-            for (auto& entry : words[word])
+            for (const auto& entry : words[word])
             {
                 totalCount += entry.count;
             }

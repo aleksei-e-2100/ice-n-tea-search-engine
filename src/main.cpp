@@ -47,8 +47,17 @@ int main()
             searchServer->search(converterJSON->getRequests());
 
     cout << "Putting answers..." << endl;
-    converterJSON->putAnswers(answers);
-
+    try
+    {
+        converterJSON->putAnswers(answers);
+        converterJSON->checkAnswersFile();
+    }
+    catch(const std::exception& e)
+    {
+        cout << "Error: " << e.what() << endl;
+        return 0;
+    }
+    
     cout << "Finished" << endl;
 
     cout << endl;

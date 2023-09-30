@@ -5,9 +5,7 @@ set(C_MAKE_CXX_STANDART 17)
 set(PROJECT_SOURCES
     main.cpp
     ${INCLUDE_DIR}/converterJSON.h
-    converterJSON_1.cpp
-    converterJSON_2.cpp
-    converterJSON_3.cpp
+    converterJSON.cpp
     ${INCLUDE_DIR}/invertedIndex.h
     invertedIndex.cpp
     ${INCLUDE_DIR}/searchServer.h

@@ -22,10 +22,10 @@ void InvertedIndex::updateDocumentBase(vector<string> inTextDocuments)
     vector<thread> threads;
 
     for (auto doc_id = 0; doc_id < textDocuments.size(); doc_id++)
-        threads.push_back(thread(countWordsInDocument, 
-                                 this, 
-                                 textDocuments[doc_id], 
-                                 doc_id));
+        threads.emplace_back(&InvertedIndex::countWordsInDocument, 
+                             this, 
+                             textDocuments[doc_id], 
+                             doc_id);
     
     for (auto& th : threads)
         th.join();
