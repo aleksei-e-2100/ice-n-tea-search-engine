@@ -1,0 +1,10 @@
+.vscode/
+.qtcreator/
+build/
+
+release/*
+!release/config.json
+!release/requests.json
+!release/answers.json
+!release/text_files/
+!release/text_files/*.txt
